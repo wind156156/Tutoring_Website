@@ -1,0 +1,67 @@
+# ===========================================
+# Root-level ignore patterns for Tutoring Platform
+# ===========================================
+
+# === Python / Backend ===
+# Virtual environment
+backend/.venv/
+
+# Python bytecode and cache
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Database files
+*.db
+*.sqlite3
+*.sqlite
+backend/tutoring.db
+
+# Environment variables (keep .env.example)
+.env
+.env.local
+.env.*.local
+!backend/.env.example
+
+# Uploaded files and media
+backend/uploads/
+
+# Logs
+*.log
+logs/
+
+# === Node.js / Frontend ===
+# Dependencies
+frontend/node_modules/
+
+# Build output
+frontend/dist/
+
+# Editor and IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# === Docker ===
+.docker/
+docker-compose.override.yml
+
+# === Claude / AI tools ===
+.claude/
+!.claude/settings.json
+
+# === OS junk ===
+.DS_Store
+Thumbs.db
+desktop.ini

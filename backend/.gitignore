@@ -1,0 +1,11 @@
+.fastapi-cache/
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+.env
+.env.local
+*.db
+*.sqlite3
