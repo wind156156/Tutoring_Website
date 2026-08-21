@@ -11,14 +11,20 @@ const pageSize = ref(10)
 const total = ref(0)
 const previewUrl = ref('')
 const showPreview = ref(false)
+const errorMsg = ref('')
 
 function openPreview(url: string) {
   previewUrl.value = url
+  errorMsg.value = ''
   showPreview.value = true
 }
 
 function isImageUrl(url: string): boolean {
   return /\.(jpg|jpeg|png|gif)$/i.test(url)
+}
+
+function onImageError() {
+  errorMsg.value = '图片加载失败，请尝试点击链接下载查看'
 }
 
 async function load(p: number = 1) {
@@ -108,10 +114,11 @@ onMounted(load)
 
     <n-modal v-model:show="showPreview" preset="card" title="资质证书" style="width: 600px;">
       <div v-if="isImageUrl(previewUrl)" style="text-align: center;">
-        <n-image :src="previewUrl" :width="560" style="max-width: 100%; border-radius: 8px;" />
+        <img :src="previewUrl" :width="560" style="max-width: 100%; border-radius: 8px;" @error="onImageError" />
       </div>
       <div v-else-if="previewUrl" style="padding: 20px; text-align: center;">
         <a :href="previewUrl" target="_blank" style="color: var(--color-primary);">📄 点击下载查看</a>
+        <p v-if="errorMsg" style="color: var(--color-danger); font-size: 12px; margin-top: 8px;">{{ errorMsg }}</p>
       </div>
       <template #footer>
         <n-space justify="end">
