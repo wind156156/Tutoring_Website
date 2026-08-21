@@ -14,7 +14,6 @@ async def lifespan(app: FastAPI):
     # Startup: create MinIO bucket if not exists
     yield
     # Shutdown
-    pass
 
 
 app = FastAPI(

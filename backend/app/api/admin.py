@@ -20,8 +20,9 @@ router = APIRouter(prefix="/admin", tags=["管理员"])
 def list_users(
     role: Optional[str] = Query(None),
     status: Optional[str] = Query(None),
-    page: int = 1,
-    page_size: int = 20,
+    search: Optional[str] = Query(None),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
     db: Session = Depends(get_db),
     user: dict = Depends(require_role("admin")),
 ):
@@ -30,6 +31,11 @@ def list_users(
         q = q.filter(User.role == role)
     if status:
         q = q.filter(User.status == status)
+    if search:
+        q = q.filter(
+            (User.phone.like(f"%{search}%")) |
+            (User.nickname.like(f"%{search}%"))
+        )
 
     total = q.count()
     items = q.order_by(User.id).offset(
@@ -103,7 +109,12 @@ def delete_user(
     ).delete(synchronize_session=False)
     db.query(Assignment).filter(Assignment.teacher_id == user_id).delete(synchronize_session=False)
     db.query(AssignmentStudent).filter(AssignmentStudent.student_id == user_id).delete(synchronize_session=False)
-    db.query(SubmissionFile).delete(synchronize_session=False)  # cascade from assignment_students
+    # Delete assignment student records for this user (cascade to SubmissionFile)
+    assignment_ids = {a.id for a in db.query(Assignment).filter(Assignment.teacher_id == user_id).all()}
+    db.query(AssignmentStudent).filter(
+        (AssignmentStudent.student_id == user_id) |
+        (AssignmentStudent.assignment_id.in_(assignment_ids))
+    ).delete(synchronize_session=False)
     db.query(Teacher).filter(Teacher.user_id == user_id).delete(synchronize_session=False)
     db.query(Student).filter(Student.user_id == user_id).delete(synchronize_session=False)
     db.query(Parent).filter(Parent.user_id == user_id).delete(synchronize_session=False)

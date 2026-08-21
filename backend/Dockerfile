@@ -12,7 +12,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy source code (.env injected via docker-compose, not baked into image)
 COPY . .
+COPY startup.sh /app/startup.sh
+RUN chmod +x /app/startup.sh
 
 EXPOSE 8000
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["/app/startup.sh"]
