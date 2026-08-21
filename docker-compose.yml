@@ -11,12 +11,12 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot123"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot123"]
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
 
   redis:
     image: redis:7-alpine
@@ -25,6 +25,7 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
+    restart: unless-stopped
 
   minio:
     image: minio/minio
@@ -43,11 +44,10 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: ghcr.io/wind156156/tutoring-backend:latest
     container_name: tutoring_backend
     ports:
       - "8000:8000"
@@ -74,9 +74,7 @@ services:
     restart: unless-stopped
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: ghcr.io/wind156156/tutoring-frontend:latest
     container_name: tutoring_frontend
     ports:
       - "8080:80"
