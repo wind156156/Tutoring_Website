@@ -45,7 +45,8 @@ async function handleDelete(user: any) {
     message.success(`已删除用户 ${user.phone}`)
     load(page.value)
   } catch (e: any) {
-    message.error(e?.message || '删除失败')
+    const msg = e?.response?.data?.detail || e?.message || '删除失败'
+    message.error(msg)
   }
 }
 

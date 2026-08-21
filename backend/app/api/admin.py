@@ -80,10 +80,6 @@ def update_user_status(
     return BaseResponse.ok(message="操作成功")
 
 
-# Minimum protected admin user IDs that cannot be deleted
-_PROTECTED_ADMIN_IDS = {6}
-
-
 @router.delete("/users/{user_id}", response_model=BaseResponse)
 def delete_user(
     user_id: int,
@@ -91,12 +87,12 @@ def delete_user(
     admin: dict = Depends(require_role("admin")),
 ):
     """Delete a user and all related data."""
-    if user_id in _PROTECTED_ADMIN_IDS:
-        raise HTTPException(status_code=403, detail="该管理员账号不可删除")
-
     u = db.query(User).filter(User.id == user_id).first()
     if not u:
         raise HTTPException(status_code=404, detail="用户不存在")
+
+    if u.role == "admin":
+        raise HTTPException(status_code=403, detail="管理员账号不可删除")
 
     # Delete child records in FK order
     db.query(IMMessage).filter(
