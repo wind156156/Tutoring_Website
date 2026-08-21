@@ -44,10 +44,10 @@ npm run dev
 
 | 角色 | 手机号 | 密码 |
 |------|--------|------|
-| 管理员 | admin | admin123 |
-| 老师 | teacher1 | teacher123 |
-| 家长 | parent1 | parent123 |
-| 学生 | student1 | student123 |
+| 管理员 | 13800000001 | admin123 |
+| 老师 | 13800000002 | teacher123 |
+| 家长 | 13800000003 | parent123 |
+| 学生 | 13800000004 | student123 |
 
 ## API 文档
 

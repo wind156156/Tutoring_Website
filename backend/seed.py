@@ -16,10 +16,10 @@ def seed():
     db: Session = SessionLocal()
 
     # Create admin
-    admin = db.query(User).filter(User.phone == "admin").first()
+    admin = db.query(User).filter(User.phone == "13800000001").first()
     if not admin:
         admin = User(
-            phone="admin",
+            phone="13800000001",
             password_hash=hash_pwd("admin123"),
             role="admin",
             nickname="管理员",
@@ -29,10 +29,10 @@ def seed():
         db.flush()
 
     # Create test teacher
-    test_teacher = db.query(User).filter(User.phone == "teacher1").first()
+    test_teacher = db.query(User).filter(User.phone == "13800000002").first()
     if not test_teacher:
         test_teacher = User(
-            phone="teacher1",
+            phone="13800000002",
             password_hash=hash_pwd("teacher123"),
             role="teacher",
             nickname="李老师",
@@ -58,10 +58,10 @@ def seed():
         db.add(teacher_profile)
 
     # Create test parent
-    test_parent = db.query(User).filter(User.phone == "parent1").first()
+    test_parent = db.query(User).filter(User.phone == "13800000003").first()
     if not test_parent:
         test_parent = User(
-            phone="parent1",
+            phone="13800000003",
             password_hash=hash_pwd("parent123"),
             role="parent",
             nickname="张先生",
@@ -75,7 +75,7 @@ def seed():
 
         # Create a student under this parent
         student = User(
-            phone="student1",
+            phone="13800000004",
             password_hash=hash_pwd("student123"),
             role="student",
             nickname="张小明",
@@ -98,10 +98,10 @@ def seed():
     db.commit()
     db.close()
     print("Seed completed!")
-    print("Admin: admin / admin123")
-    print("Teacher: teacher1 / teacher123")
-    print("Parent: parent1 / parent123")
-    print("Student: student1 / student123")
+    print("Admin: 13800000001 / admin123")
+    print("Teacher: 13800000002 / teacher123")
+    print("Parent: 13800000003 / parent123")
+    print("Student: 13800000004 / student123")
 
 if __name__ == "__main__":
     seed()
