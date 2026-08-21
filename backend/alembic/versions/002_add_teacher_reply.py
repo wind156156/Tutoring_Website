@@ -14,10 +14,8 @@ depends_on = None
 
 
 def upgrade():
-    op.add_column('teacher_student_bindings',
-        sa.Column('teacher_reply', sa.Text(), nullable=True)
-    )
+    pass
 
 
 def downgrade():
-    op.drop_column('teacher_student_bindings', 'teacher_reply')
+    pass
