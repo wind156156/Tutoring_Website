@@ -147,7 +147,7 @@ onMounted(async () => {
         </n-form-item>
         <n-form-item label="薄弱科目">
           <n-select v-model:value="form.subjects" multiple filterable
-            :options="subjectOptions.map(s => ({ label: s, value: s }))"
+            :options="subjectOptions"
             placeholder="选择科目" />
         </n-form-item>
       </n-form>
