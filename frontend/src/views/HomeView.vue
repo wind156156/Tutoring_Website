@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { getAnnouncements } from '@/api/common'
 
 const router = useRouter()
 const announcements = ref<any[]>([])
 
 async function loadAnnouncements() {
   try {
-    const res = await fetch('/api/v1/announcements')
-    const data = await res.json()
-    if (data.code === 0) announcements.value = data.data || []
+    announcements.value = await getAnnouncements()
   } catch {
-    // ignore
+    // ignore public endpoint failures
   }
 }
 

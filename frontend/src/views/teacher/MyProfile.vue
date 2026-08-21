@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { NButton, NInput, NForm, NFormItem, NSpace, NAlert, NTag, NRadioGroup, NRadio } from 'naive-ui'
+import { NButton, NInput, NForm, NFormItem, NSpace, NAlert, NTag, NRadioGroup, NRadio, NSelect } from 'naive-ui'
 import { useRouter } from 'vue-router'
 import { getMyProfile, updateTeacherProfile } from '@/api/teachers'
 import { uploadFile } from '@/api/assignments'
+import { getSubjects } from '@/api/common'
 
 const router = useRouter()
 const message = { success: (m: string) => window.alert(m), error: (m: string) => window.alert(m) }
@@ -29,7 +30,16 @@ const form = ref({
   bio: '',
 })
 
-const subjectOptions = ['语文', '数学', '英语', '物理', '化学', '生物', '政治', '历史', '地理', '科学', '编程', '美术', '音乐', '体育']
+const subjectOptions = ref<{ label: string; value: string }[]>([])
+
+async function loadSubjects() {
+  try {
+    const list = await getSubjects()
+    subjectOptions.value = list.map(s => ({ label: s, value: s }))
+  } catch {
+    subjectOptions.value = []
+  }
+}
 
 async function loadProfile() {
   try {
@@ -83,7 +93,9 @@ async function handleSubmit() {
   }
 }
 
-onMounted(loadProfile)
+onMounted(async () => {
+  await Promise.all([loadProfile(), loadSubjects()])
+})
 </script>
 
 <template>

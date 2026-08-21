@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { NButton, NModal, NInput, NForm, NFormItem, NSpace, NRadioGroup, NRadio, NSelect } from 'naive-ui'
 import { getStudents, createStudent, updateStudent, deleteStudent } from '@/api/parents'
+import { getSubjects } from '@/api/common'
 
 const message = { success: (m) => window.alert(m), error: (m) => window.alert(m) }
 const students = ref<any[]>([])
@@ -10,7 +11,16 @@ const editingId = ref<number | null>(null)
 const form = ref({ real_name: '', gender: '' as string | null, birth_year: null as number | null, grade: '', school: '', subjects: [] as string[], phone: '', password: '123456' })
 const loading = ref(false)
 
-const subjectOptions = ['语文', '数学', '英语', '物理', '化学', '生物', '政治', '历史', '地理', '科学', '编程']
+const subjectOptions = ref<{ label: string; value: string }[]>([])
+
+async function loadSubjects() {
+  try {
+    const list = await getSubjects()
+    subjectOptions.value = list.map(s => ({ label: s, value: s }))
+  } catch {
+    subjectOptions.value = []
+  }
+}
 
 async function load() {
   students.value = await getStudents()
@@ -72,7 +82,9 @@ async function handleDelete(id: number) {
   }
 }
 
-onMounted(load)
+onMounted(async () => {
+  await Promise.all([load(), loadSubjects()])
+})
 </script>
 
 <template>

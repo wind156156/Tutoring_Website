@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Body
-from typing import Optional, List
+from typing import Optional
 from sqlalchemy.orm import Session
 
 from app.core.auth import get_current_user, require_role
